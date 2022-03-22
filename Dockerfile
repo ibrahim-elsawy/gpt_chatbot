@@ -7,11 +7,9 @@ WORKDIR /opt/app
 COPY . .
 
 RUN apt update -y ;\
-    apt install nginx -y;\ 
-    pip install --no-cache-dir -r requirements.txt;\
-    python3 -m spacy download en_core_web_lg;\
+    pip install -r requirements.txt;\
     cat /etc/os-release;
 
 EXPOSE 5000
 
-CMD ["pyuwsgi", "--ini", "app.ini"]
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]

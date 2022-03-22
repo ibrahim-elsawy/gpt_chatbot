@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, Response
+from unittest import result
+from flask import Flask, request, jsonify, Response, make_response
 import os
 from waitress import serve
 from middleware import HandleRequest
@@ -10,6 +11,7 @@ app = Flask(__name__)
 
 PORT = os.environ.get("PORT")
 
+
 @app.route("/id", methods=['POST'])
 def getId():
 	if request.method == 'POST':
@@ -19,7 +21,7 @@ def getId():
 			res = handler.id_request(req)
 			return jsonify(res)
 		except Exception as e:
-			return 400
+			return Response(status=400)
 @app.route("/req", methods=['POST'])
 def getRequest():
 	if request.method == 'POST':
@@ -29,7 +31,7 @@ def getRequest():
 			answer = handler.chat_request(req)
 			return jsonify({'response':answer})
 		except Exception as e:
-			return 400
+			return Response(status=400)																				()
 
 @app.route("/train", methods=['POST'])
 def trainModel():
@@ -37,22 +39,23 @@ def trainModel():
 		try:
 			req = request.get_json() 
 			handler = HandleRequest()
-			status_code = handler.train_request(req)
-			return Response(status = status_code)
+			res, status_code = handler.train_request(req)
+			
+			return make_response(jsonify(res), status_code)
 		except Exception as e:
-			return 400
+			return Response(status=400)
 
 @app.route("/token", methods=['GET'])
 def refreshToken():
 	if request.method == 'GET':
 		try:
+			errorRes = {"message" : "invalid token", "error" : "Bad Request"}
 			req = request.get_json()
 			handler = HandleRequest()
 			token = handler.refresh_token(req)
-
-			return jsonify({'token':token}) if token != None else 400
+			return jsonify({'token':token}) if token != None else make_response(jsonify(errorRes),400)
 		except Exception as e:
-			return 400
+			return make_response(jsonify(errorRes),400)
 
 
 
