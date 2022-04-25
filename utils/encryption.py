@@ -15,7 +15,7 @@ class TokenEncryption():
 		jwt_payload = jwt.encode( { 
 			**payload,
 			# "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=30), 
-			"exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=5), 
+			"exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=30), 
 			}, self.key,) 
 		return jwt_payload 
 	def decrypt(self, jwt_payload): 

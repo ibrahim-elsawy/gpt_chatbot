@@ -33,6 +33,19 @@ def getRequest():
 		except Exception as e:
 			return Response(status=400)																				()
 
+@app.route("/train", methods=['GET'])
+def getTrainData():
+	if request.method == 'GET':
+		try:
+			req = request.get_json() 
+			handler = HandleRequest()
+			res, status_code = handler.previos_training(req)
+			
+			return make_response(jsonify(res), status_code)
+		except Exception as e:
+			return Response(status=400)
+
+
 @app.route("/train", methods=['POST'])
 def trainModel():
 	if request.method == 'POST':

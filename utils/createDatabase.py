@@ -1,8 +1,8 @@
 import sqlite3
 
-DBNAME="chatbot"
-T1="info"
-T2="qa"
+DBNAME="../chatbot"
+T1="info_old"
+T2="qa_old"
 
 
 if __name__ == '__main__': 
